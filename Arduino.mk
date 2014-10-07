@@ -1132,7 +1132,7 @@ endif
 
 $(OBJDIR)/%.eep: $(OBJDIR)/%.elf $(COMMON_DEPS)
 	@$(MKDIR) $(dir $@)
-	-$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom="alloc,load" \
+	-$(OBJCOPY) -j .eeprom --set-section-flags=.eeprom='alloc,load' \
 		--change-section-lma .eeprom=0 -O ihex $< $@
 
 $(OBJDIR)/%.lss: $(OBJDIR)/%.elf $(COMMON_DEPS)
@@ -1280,7 +1280,7 @@ error_on_caterina:
 
 # Use submake so we can guarantee the reset happens
 # before the upload, even with make -j
-upload:		$(TARGET_HEX) verify_size
+upload:	$(TARGET_HEX) verify_size
 		$(MAKE) reset
 		$(MAKE) do_upload
 
@@ -1296,7 +1296,7 @@ do_eeprom:	$(TARGET_EEP) $(TARGET_HEX)
 		$(AVRDUDE) $(AVRDUDE_COM_OPTS) $(AVRDUDE_ARD_OPTS) \
 			$(AVRDUDE_UPLOAD_EEP)
 
-eeprom:		$(TARGET_HEX) verify_size
+eeprom:	$(TARGET_HEX) verify_size
 		$(MAKE) reset
 		$(MAKE) do_eeprom
 
@@ -1364,7 +1364,7 @@ verify_size:
 ifeq ($(strip $(HEX_MAXIMUM_SIZE)),)
 	@$(ECHO) "\nMaximum flash memory of $(BOARD_TAG) is not specified. Make sure the size of $(TARGET_HEX) is less than $(BOARD_TAG)\'s flash memory\n\n"
 endif
-	@if [ ! -f $(TARGET_HEX).sizeok ]; then echo >&2 "\nThe size of the compiled binary file is greater than the $(BOARD_TAG)'s flash memory. \
+	@if [ ! -f $(TARGET_HEX).sizeok ]; then echo >&2 "\nThe size of the compiled binary file is greater than the $(BOARD_TAG)'s flash memory ($(HEX_MAXIMUM_SIZE)). \
 See http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."; false; fi
 
 generate_assembly: $(OBJDIR)/$(TARGET).s
